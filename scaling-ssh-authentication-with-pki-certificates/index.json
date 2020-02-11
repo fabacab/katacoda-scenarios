@@ -1,13 +1,14 @@
 {
   "title": "Scaling SSH Authentication with PKI Certificates",
-  "description": "Introduction to creating and using SSH certificates for authenticating OpenSSH servers.",
+  "description": "Intro to creating and using SSH certificates for host authentication.",
   "difficulty": "Intermediate",
   "time": "12 minutes",
   "details": {
     "steps": [
       {
-        "title": "Step 1",
-        "text": "step1.md"
+        "title": "Step 1: Create a Server Certificate Signing Keypair",
+        "text": "step1.md",
+        "verify": "step1-verify.sh"
       },
       {
         "title": "Step 2",
