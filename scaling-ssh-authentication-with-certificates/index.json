@@ -11,7 +11,7 @@
         "verify": "step1-verify.sh"
       },
       {
-        "title": "Step 2",
+        "title": "Step 2: Generate an SSH Host Certificate and Configure the SSH server",
         "text": "step2.md"
       },
       {
