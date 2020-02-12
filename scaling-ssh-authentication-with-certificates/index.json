@@ -1,6 +1,6 @@
 {
-  "title": "Scaling SSH Authentication with PKI Certificates",
-  "description": "Intro to creating and using SSH certificates for host authentication.",
+  "title": "Scaling SSH Authentication with Certificates",
+  "description": "Creating and using SSH certificates for host authentication.",
   "difficulty": "Intermediate",
   "time": "12 minutes",
   "details": {
