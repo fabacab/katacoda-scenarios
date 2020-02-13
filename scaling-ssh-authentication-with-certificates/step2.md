@@ -35,7 +35,7 @@ Next, once the server's SSH host key is signed and its certificate file generate
 
 1. Add the `HostCertificate` directive to your SSH sever's configuration file.
     ```
-    echo "HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub" >> /etc/ssh/sshd_config
+    echo "HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub" | sudo tee -a /etc/ssh/sshd_config
     ```{{execute}}
 1. Instruct the SSH daemon to reload its configuration file:
     ```sh
