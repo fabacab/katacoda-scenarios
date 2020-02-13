@@ -20,3 +20,5 @@ It is the public key contained in this file that we will need to tell our SSH cl
     echo -n "@cert-authority " | cat - ~/tmp_known_hosts > ~/.ssh/known_hosts
     ```{{execute}}
     This marker indicates that the entry refers to the public key of a Certificate Authority rather than the fingerprint of an SSH server's public host key. Once again, notice the important trailing space character.
+
+With your client configured, you can now test your configuration by initiating an SSH connection that will be authenticated using the new SSH host certificate.
