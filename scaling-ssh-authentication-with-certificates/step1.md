@@ -1,10 +1,24 @@
-Before you can use an SSH certificate as an SSH server's host key, you must create an SSH keypair with which you will sign your other host keys.
+Without SSH certificates, authenticating an SSH server is usually done by noting its host key in your user's `.ssh/known_hosts` file. The first time you connect to an SSH server using a plain host key for authentication, you'll see a prompt asking you to confirm the connection. Try this now:
 
-The safety of this "signing keypair" is extremely important because these keys will be used to approve SSH host keys for all the other SSH servers in your infrastructure. In this example, we're only using one SSH server as an example, so we'll be generating and storing the signing keypair on our single server, but in a real-life scenario you would want to generate and store the signing keypair in a far more secure location, such as a secured administrator's workstation.
+```sh
+ssh host01
+```{{execute}}
 
-To actually generate the keypair itself, we turn to `ssh-keygen(1)` as normal. This is because the only meaningful distinction between a regular SSH keypair and a signing keypair is the way we use the keys we generate. The keys we generate for the purpose of signing a server's host keys are not fundamentally different than any other keypair.
+This is called Trust On First Use (TOFU) and, if you accept the connection (by answering `yes`), you will have added a line to your `.ssh/known_hosts` file containing some information about this connection:
 
-**Do this** to create your SSH signing keypair:
+```sh
+cat .ssh/known_hosts
+```{{execute}}
+
+If the server's SSH host key changes, you will receive a warning because the host key fingerprints will no longer match. This is called a *host key verification failure*. Not only is rotating keys generally considered good security practice, it's a hassle for users to go through this TOFU confirmation step on each new machine or user account they use. SSH certificates are a good way to solve these problems.
+
+Before you can use an SSH certificate as an SSH server's host key, you must create an SSH keypair with which you will sign your other host keys. This special-purpose keypair is often called a Certificate Authority key (CA key) or, more colloquially, a "signing keypair."
+
+The safety of this keypair is extremely important because these keys will be used to approve SSH host keys for all the other SSH servers in your infrastructure. In this example, we're only using one SSH server as an example, so we'll be generating and storing the signing keypair on our single server, but in a real-life scenario you would want to generate and store the CA keys in a far more secure location, such as a secured administrator's workstation.
+
+To actually generate the keypair itself, we turn to `ssh-keygen(1)` as normal. This is because the only meaningful distinction between a regular SSH keypair and a CA keypair is the way we use the keys we generate. The keys we generate for the purpose of signing a server's host keys are not fundamentally different than any other keypair.
+
+**Do this** to create your SSH CA keys:
 
 1. Create a directroy to store our new signing keys:
     ```sh
@@ -20,4 +34,4 @@ To actually generate the keypair itself, we turn to `ssh-keygen(1)` as normal. T
     ```{{execute}}
     The above command creates a keypair whose key type (`-t`) is [`ed25519`](https://en.wikipedia.org/wiki/EdDSA#Ed25519) and whose file contains a comment (`-C`) indicating the purpose of the key ("`SSH CA Root Signing Key`"). The pair of keyfiles constituting the keypair will be created in files (`-f`) in the `/etc/pki/ssh` directory, named `ssh_host_signing_key_ed25519` and `ssh_host_signing_key_ed25519.pub`.
 
-Now that you've generated a signing keypair and protected them on your server's filesystem, we can use them to sign existing or new host keys for SSH servers in your fleet.
+Now that you've generated your CA's signing keypair and protected them on your server's filesystem, we can use them to sign existing or new host keys for SSH servers in your fleet.

@@ -10,7 +10,7 @@ As an SSH user (client-side), using SSH certificates for host authentication mea
 
 ## Workshop limitations
 
-Not (currently) included in this workshop is:
+Topics not (currently) included in this workshop are:
 
 * the converse, i.e., user authentication with SSH certificates.
 * [certificate authentication with SSH products such as Tectia® Server](https://www.ssh.com/manuals/server-admin/64/serverauth-cert.html).
