@@ -17,7 +17,7 @@
         "verify": "step2-verify.sh"
       },
       {
-        "title": "Step 3",
+        "title": "Step 3: Configure your SSH client to Validate SSH Host Certificates",
         "text": "step3.md"
       },
       {

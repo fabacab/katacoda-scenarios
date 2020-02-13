@@ -1,22 +1,33 @@
-Without SSH certificates, authenticating an SSH server is usually done by noting its host key in your user's `.ssh/known_hosts` file. The first time you connect to an SSH server using a plain host key for authentication, you'll see a prompt asking you to confirm the connection. Try this now:
+Without SSH certificates, authenticating an SSH server is usually done by noting its host key's fingerprint in your user's `.ssh/known_hosts` file. The first time you connect to an SSH server using a plain host key for authentication, you'll see a prompt asking you to confirm the connection. Try this now:
 
 ```sh
 ssh host01
 ```{{execute}}
 
-This is called Trust On First Use (TOFU) and, if you accept the connection (by answering `yes`), you will have added a line to your `.ssh/known_hosts` file containing some information about this connection:
-
+Accept the connection by answering `yes`:
 ```sh
-cat .ssh/known_hosts
+yes
 ```{{execute}}
 
-If the server's SSH host key changes, you will receive a warning because the host key fingerprints will no longer match. This is called a *host key verification failure*. Not only is rotating keys generally considered good security practice, it's a hassle for users to go through this TOFU confirmation step on each new machine or user account they use. SSH certificates are a good way to solve these problems.
+This is called Trust On First Use (TOFU) and, if you accepted the connection, you will have added a line to your "known hosts database," typically a file called `known_hosts` in your `~/.ssh` directory containing some information about this connection.
+
+```sh
+cat .ssh/known_hosts || echo "You do not yet have an SSH known hosts database."
+```{{execute}}
+
+If you did accept the SSH connection, don't forget to log out of your SSH session to return to your original shell:
+
+```sh
+exit # Only run this if you answered `yes`, above.
+```
+
+If the server's SSH host key changes in the future, your SSH client can now issue a warning because the host key fingerprints will no longer match. This is called a *host key verification failure* and is intended to prevent Machine-in-the-Middle (MitM) and various other forms of traffic interception attacks. However, rotating cryptographic keys is generally considered good security practice, so it's also possible that a host key verification failure simply means that your infrastructure has been updated. In practice, it's often a hassle for users to go through this TOFU confirmation step on each new machine or user account they use, and this amount of explicit coordination between SSH administrators and SSH users imposes significant operational costs for large organizations. SSH certificates are a good way to solve these problems.
 
 Before you can use an SSH certificate as an SSH server's host key, you must create an SSH keypair with which you will sign your other host keys. This special-purpose keypair is often called a Certificate Authority key (CA key) or, more colloquially, a "signing keypair."
 
 The safety of this keypair is extremely important because these keys will be used to approve SSH host keys for all the other SSH servers in your infrastructure. In this example, we're only using one SSH server as an example, so we'll be generating and storing the signing keypair on our single server, but in a real-life scenario you would want to generate and store the CA keys in a far more secure location, such as a secured administrator's workstation.
 
-To actually generate the keypair itself, we turn to `ssh-keygen(1)` as normal. This is because the only meaningful distinction between a regular SSH keypair and a CA keypair is the way we use the keys we generate. The keys we generate for the purpose of signing a server's host keys are not fundamentally different than any other keypair.
+To actually generate the keypair itself, we will use the `ssh-keygen(1)` tool, just as we would with any other SSH key generation task. This is because the only meaningful distinction between a "regular" SSH keypair and a CA keypair is the way we use the keys we generate. The keys we generate for the purpose of signing a server's host keys are not fundamentally different than any other keypair.
 
 **Do this** to create your SSH CA keys:
 

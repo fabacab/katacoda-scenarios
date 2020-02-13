@@ -14,9 +14,9 @@ ssh-keygen -L -f "$certificate_file" \
     && exit 1 # Validation failure, bad SSH daemon config.
 
 # Audit SSH's running config.
-ssh -o "StrictHostKeyChecking yes" -v host01 2>&1 \
+ssh -o "StrictHostKeyChecking=yes" -o "IdentitiesOnly=yes" -v host01 2>&1 \
     | grep -q "Server host certificate:"
-[ 0 -ne "$?") ] && exit 1 # Validation failure, running config is missing cert.
+[ 0 -ne "$?" ] && exit 1 # Validation failure, running config is missing cert.
 
 rm -f "$certificate_data" # Cleanup temporary files.
 
