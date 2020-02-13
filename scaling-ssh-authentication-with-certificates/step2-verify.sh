@@ -14,7 +14,7 @@ ssh-keygen -L -f "$certificate_file" \
     && exit 1 # Validation failure, bad SSH daemon config.
 
 # Audit SSH's running config.
-# TODO: This doesn't seem to work in Katacoda's own verification check.
+# TODO: This doesn't seem to work as Katacoda's own verification check.
 #       It's possible that the verification scripts are running as part
 #       of an earlier SSH connection that cannot be reloaded. For the
 #       moment, we'll just assume that the user did this correctly as per
