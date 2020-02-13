@@ -13,6 +13,7 @@
       {
         "title": "Step 2: Generate an SSH Host Certificate and Configure the SSH server",
         "text": "step2.md",
+        "courseData": "step2-init.sh",
         "verify": "step2-verify.sh"
       },
       {
