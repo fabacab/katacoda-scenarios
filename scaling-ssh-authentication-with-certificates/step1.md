@@ -15,12 +15,6 @@ This is called Trust On First Use (TOFU) and, if you accepted the connection, yo
 cat .ssh/known_hosts || echo "You do not yet have an SSH known hosts database."
 ```{{execute}}
 
-If you did accept the SSH connection, don't forget to log out of your SSH session to return to your original shell:
-
-```sh
-exit # Only run this if you answered `yes`, above.
-```
-
 If the server's SSH host key changes in the future, your SSH client can now issue a warning because the host key fingerprints will no longer match. This is called a *host key verification failure* and is intended to prevent Machine-in-the-Middle (MitM) and various other forms of traffic interception attacks. However, rotating cryptographic keys is generally considered good security practice, so it's also possible that a host key verification failure simply means that your infrastructure has been updated. In practice, it's often a hassle for users to go through this TOFU confirmation step on each new machine or user account they use, and this amount of explicit coordination between SSH administrators and SSH users imposes significant operational costs for large organizations. SSH certificates are a good way to solve these problems.
 
 Before you can use an SSH certificate as an SSH server's host key, you must create an SSH keypair with which you will sign your other host keys. This special-purpose keypair is often called a Certificate Authority key (CA key) or, more colloquially, a "signing keypair."
