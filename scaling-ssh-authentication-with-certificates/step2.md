@@ -16,16 +16,18 @@ Notice that we always sign SSH host *public* keys, never their private keys. It'
 
 1. Use `ssh-keygen` again, this time with the `-s <private_signing_key>` option and the `-h` flag:
     ```sh
-    sudo ssh-keygen -s /etc/pki/ssh/ssh_host_signing_key_ed25519 -h -V +1w -n host01 -I example-host /etc/ssh/ssh_host_ed25519_key.pub
+    sudo ssh-keygen -s /etc/pki/ssh/ssh_host_signing_key_ed25519 -h -n host01 -I example-host -V +1w /etc/ssh/ssh_host_ed25519_key.pub
     ```{{execute}}
     In the above command,
 
     * the `-s` option specifies the (private) signing key to use,
     * the `-h` flag indicates that the generated certificate should be for an SSH host (rather than an SSH user),
-    * the `-V` option specifies a validity time period (using standard SSH time patterns; `1w` is equal to one week),
     * the `-n` option is used to select the principal name, which is hostname to which the SSH will ultimately connect,
     * the `-I` option provides a unique key ID, and
+    * the `-V` option specifies a validity time period (using standard SSH time patterns; `1w` is equal to one week),
     * the final argument specifies the SSH host public key to sign.
+
+> :bulb: In a production scenario, you will likely also want to make use of the `-z` option to specify a serial number for the new certificate.
 
 This command will have created a new certificate, `/etc/ssh/ssh_host_ed25519_key-cert.pub`, which the SSH server can now use to assert its identity to connecting clients.
 
